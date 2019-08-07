@@ -192,7 +192,7 @@ export class AddClienteComponent implements OnInit {
     private novoCliente(cliente) {
         cliente.idPlano = cliente.plano.idPlano;
         this.clienteService.addCliente(cliente)
-            .subscribe(res => {
+            .subscribe(cliente => {
                 cliente.nomePlano = cliente.plano.nome;
                 this.display = false;
                 let clientes = [...this.clientes];
