@@ -1,0 +1,76 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+        <div class="card card-w-title">
+            <h1>PROCEDIMENTOS</h1>
+            <div class="ui-g">
+
+
+                <div class="ui-g-12 ui-md-8">
+                    <div class="ui-g-12 ui-md-8 ui-lg-2" style="float: right;">
+                            <button pButton type="button" icon="fa-plus"
+                            (click)="addProcedimento()" label="Novo Procedimento"></button>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-8">
+                    <p-dataTable [value]="procedimentos" emptyMessage="Nenhum registro encontrado!" #data>
+                        <p-column field="nome" header="Nome"></p-column>
+                        <p-column styleClass="col-button" header="Ações">
+                            <ng-template let-procedimento="rowData" pTemplate="body">
+                                <button type="button" pButton (click)="deletarProcedimento(procedimento, data)" icon="fa-trash"></button>
+                            </ng-template>
+                        </p-column>
+                    </p-dataTable>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="display" [modal]="true" [responsive]="true"
+    [ngClass]="'ui-responsive-dialog ui-sm-responsive-dialog ui-md-responsive-dialog ui-lg-responsive-dialog'"
+    [resizable]="false" [focusOnShow]="false" [baseZIndex]="-50" [width]="500" [contentStyle]="{'height':'232px'}"
+    [height]="376" [blockScroll]="true">
+    <p-header>
+        NOVO PROCEDIMENTO
+    </p-header>
+
+
+    <form *ngIf="display" [formGroup]="form" novalidate>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="ui-g form-group" *ngIf="!visualizar">
+                    <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+                        <div class="ui-g-12 ui-md-12 ui-sm-12 ui-lg-12 ui-xl-12 espaco-divs">
+                            <div class="ui-inputgroup">
+                                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+                                <input type="text" pInputText placeholder="Nome do Procedimento" [(ngModel)]="procedimento.nome"
+                                    formControlName="nome">
+                            </div>
+                            <span class="md-inputfield">
+                                <div *ngIf="isValidado('nome')" class="ui-message ui-messages-error">
+                                    Preenchimento obrigatório
+                                </div>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+    <p-footer>
+        <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+            <button pButton name="cancelar" id="cancelar" icon="fa-close" label="Cancelar"
+                class="btnCancelar" (click)="display = false;"></button>
+            <button pButton name="salvar" id="salvar" icon="fa-check" label="Salvar" class="btnNovo"
+                (click)="salvar()"></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

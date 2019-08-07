@@ -1,0 +1,133 @@
+<p-messages [(value)]="msgs"></p-messages>
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+        <div class="card card-w-title">
+            <h1>CLIENTES</h1>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-12">
+                    <div class="ui-g-12 ui-md-12 ui-lg-2" style="float: right;">
+                        <button pButton type="button" icon="fa-plus" label="Novo" (click)="addCliente()" (onHide)="limparModal()"></button>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-12">
+                    <p-dataTable [value]="clientes" emptyMessage="Nenhum registro encontrado!" #data>
+                        <p-column field="nome" header="Nome"></p-column>
+                        <p-column field="dataNascimento" header="Data de Nascimento">
+                            <ng-template let-row="rowData" pTemplate="body">
+                                {{row.dataNascimento | date:'dd/MM/yyyy'}}
+                            </ng-template>
+                        </p-column>
+                        <p-column field="sexo" header="Sexo">
+                            <ng-template let-row="rowData" pTemplate="body">
+                                {{setSexo(row.sexo)}}
+                            </ng-template>
+                        </p-column>
+                        <p-column field="nomePlano" header="Pano"></p-column>
+                        <p-column styleClass="col-button" header="Ações">
+                            <ng-template let-cliente="rowData" pTemplate="body">
+                                <button type="button" pButton (click)="deletarCliente(cliente, data)" icon="fa-trash"></button>
+                                <button type="button" pButton (click)="abrirEditar(cliente, data)" icon="fa-edit"></button>
+                            </ng-template>
+                        </p-column>
+                    </p-dataTable>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="display" [modal]="true" [responsive]="true"
+    [ngClass]="'ui-responsive-dialog ui-sm-responsive-dialog ui-md-responsive-dialog ui-lg-responsive-dialog'"
+    [resizable]="false" [focusOnShow]="false" [baseZIndex]="-50" [width]="500" [contentStyle]="{'height':'439px'}"
+    [height]="567" [blockScroll]="true">
+    <p-header>
+        NOVO CLIENTE
+    </p-header>
+
+    <form *ngIf="display" [formGroup]="form" novalidate>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="ui-g form-group" *ngIf="!visualizar">
+                    <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+                        <div class="ui-g-12 ui-md-12 ui-sm-12 ui-lg-12 ui-xl-12 espaco-divs">
+                            <div class="ui-inputgroup">
+                                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+                                <input type="text" pInputText placeholder="Nome" [(ngModel)]="cliente.nome"
+                                    formControlName="nome">
+                            </div>
+                            <span class="md-inputfield">
+                                <div *ngIf="isValidado('nome')" class="ui-message ui-messages-error">
+                                    Preenchimento obrigatório
+                                </div>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-12 ui-sm-12 ui-lg-12 ui-xl-12 espaco-divs">
+                            <span class="md-inputfield">
+                                    <p-calendar showButtonBar="true" [locale]="dataBr" [yearNavigator]="true" [monthNavigator]="true" dateFormat="dd/mm/yy" yearRange="1950:2030" [(ngModel)]="cliente.dataNascimento" formControlName="dataNascimento" [showIcon]="true"></p-calendar>
+                                </span>
+                            <span class="md-inputfield">
+                                <div *ngIf="isValidado('dataNascimento')" class="ui-message ui-messages-error">
+                                    Preenchimento obrigatório
+                                </div>
+                            </span>
+                        </div>
+                        <div class="ui-g-6 ui-md-6 ui-sm-6 ui-lg-6 ui-xl-6 espaco-divs">
+                            <div class="ui-inputgroup">
+                                <span class="ui-inputgroup-addon"><i class="fa fa-genderless"></i></span>
+                                <p-dropdown [style]="{'width':'150px'}" [autoWidth]="false" placeholder="Sexo"
+                                    [options]="sexo" [scrollHeight]="'80px'" formControlName="sexo"
+                                    [(ngModel)]="cliente.sexo"></p-dropdown>
+                            </div>
+                            <span class="md-inputfield">
+                                <div *ngIf="isValidado('sexo')" class="ui-message ui-messages-error">
+                                    Preenchimento obrigatório
+                                </div>
+                            </span>
+                        </div>
+                        <div class="ui-g-6 ui-md-6 ui-sm-6 ui-lg-6 ui-xl-6 espaco-divs">
+                            <div class="labeled-dropdown filled">
+                                <div class="ui-inputgroup">
+                                    <span class="ui-inputgroup-addon"><i class="fa fa-heartbeat"></i></span>
+                                    <p-dropdown [style]="{'width':'150px'}" [autoWidth]="false" placeholder="Plano"
+                                        [options]="planosSelect" [scrollHeight]="'80px'" formControlName="plano"
+                                        [(ngModel)]="cliente.plano.idPlano"
+                                        >
+                                    </p-dropdown>
+
+                                </div>
+                                <span class="md-inputfield">
+                                    <div *ngIf="isValidado('plano')" class="ui-message ui-messages-error">
+                                        Preenchimento obrigatório
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+    <p-footer>
+        <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+            <button pButton name="cancelar" id="cancelar" icon="fa-close" label="Cancelar"
+                class="btnCancelar" (click)="display = false;"></button>
+            <button pButton name="salvar" id="salvar" icon="fa-check" label="Salvar" class="btnNovo"
+                (click)="salvar()"></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-confirmDialog #dialogDelete [responsive]="true">
+    <p-footer>
+      <div class="ui-g-12">
+          <button pButton icon="fa-close" label="Não" class="btnNao" (click)="dialogDelete.reject()"></button>
+          <button pButton icon="fa-check" label="Sim" class="btnSim" (click)="dialogDelete.accept()"></button>
+      </div>
+    </p-footer>
+  </p-confirmDialog>

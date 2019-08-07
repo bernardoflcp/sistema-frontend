@@ -1,0 +1,30 @@
+<div class="topbar clearfix">
+
+        <div class="logoPrincipal">
+                <i class="fa fa-user-md fa-6" style="
+                color: #1393e2;
+                font-size: 5em;
+                margin-left: 67px;
+            " aria-hidden="true"></i>
+        </div>
+        <a id="menu-button" href="#" (click)="app.onMenuButtonClick($event)">
+                <i></i>
+            </a>
+
+        <ul class="topbar-items animated fadeInDown" [ngClass]="{'topbar-items-visible': app.topbarMenuActive}">
+            <li hidden=true>
+                <i class="topbar-icon material-icons">more_vert</i>
+            </li>
+
+            <li>
+            </li>
+            <li hidden=true>
+                <i class="topbar-icon material-icons animated swing"></i>
+            </li>
+            <li hidden=true>
+                <i class="topbar-icon material-icons"></i>
+            </li>
+        </ul>
+
+
+</div>

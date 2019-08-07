@@ -1,0 +1,88 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+        <div class="card card-w-title">
+            <h1 translate="CONTAGEM FUNCIONAL">PLANOS</h1>
+            <div class="ui-g">
+
+
+                <div class="ui-g-12 ui-md-8">
+                    <div class="ui-g-12 ui-md-8 ui-lg-2" style="float: right;">
+                        <button pButton type="button" icon="fa-plus" (click)="addPlano()" label="Novo"></button>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-8">
+                    <p-dataTable [value]="planos" emptyMessage="Nenhum registro encontrado!" #data>
+                        <p-column [style]="{'width': '30px'}" field="nome" header="Nome"></p-column>
+                        <p-column [style]="{'width': '30px'}" styleClass="col-button" header="Ações">
+                            <ng-template let-plano="rowData" pTemplate="body">
+                                <button type="button" pButton (click)="deletarPlano(plano, data)" icon="fa-trash"></button>
+                                <button type="button" pButton (click)="abrirVincular(plano)" icon="fa-link"></button>
+                                <button type="button" pButton (click)="abrirDesvincular(plano)" icon="fa-unlink"></button>
+                            </ng-template>
+                        </p-column>
+                    </p-dataTable>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="display" [modal]="true" [responsive]="true"
+    [ngClass]="'ui-responsive-dialog ui-sm-responsive-dialog ui-md-responsive-dialog ui-lg-responsive-dialog'"
+    [resizable]="false" [focusOnShow]="false" [baseZIndex]="-50" [width]="500" [contentStyle]="{'height':'232px'}"
+    [height]="376" [blockScroll]="true">
+    <p-header>
+        NOVO PLANO
+    </p-header>
+
+
+    <form *ngIf="display" [formGroup]="form" novalidate>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <div class="ui-g form-group" *ngIf="!visualizar">
+                    <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+                        <div class="ui-g-12 ui-md-12 ui-sm-12 ui-lg-12 ui-xl-12 espaco-divs">
+                            <div class="ui-inputgroup">
+                                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+                                <input type="text" pInputText placeholder="Nome do Plano" [(ngModel)]="plano.nome"
+                                    formControlName="nome">
+                            </div>
+                            <span class="md-inputfield">
+                                <div *ngIf="isValidado('nome')" class="ui-message ui-messages-error">
+                                    Preenchimento obrigatório
+                                </div>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+    <p-footer>
+        <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+            <button pButton name="cancelar" id="cancelar" icon="fa-close" label="Cancelar"
+                class="btnCancelar" (click)="display = false;"></button>
+            <button pButton name="salvar" id="salvar" icon="fa-check" label="Salvar" class="btnNovo"
+                (click)="salvar()"></button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+
+<p-confirmDialog #dialogDelete [responsive]="true">
+    <p-footer>
+      <div class="ui-g-12">
+          <button pButton icon="fa-close" label="Não" class="btnNao" (click)="dialogDelete.reject()"></button>
+          <button pButton icon="fa-check" label="Sim" class="btnSim" (click)="dialogDelete.accept()"></button>
+      </div>
+    </p-footer>
+  </p-confirmDialog>
+
+<app-vincular-procedimento #dialogForm></app-vincular-procedimento>
+<app-desvincular-procedimento #dialogFormDesvincular></app-desvincular-procedimento>

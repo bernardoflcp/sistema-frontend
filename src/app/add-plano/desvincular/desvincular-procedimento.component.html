@@ -1,0 +1,46 @@
+
+<p-dialog [(visible)]="displayDesvincular" [modal]="true" [responsive]="true"
+[ngClass]="'ui-responsive-dialog ui-sm-responsive-dialog ui-md-responsive-dialog ui-lg-responsive-dialog'"
+[resizable]="false" [focusOnShow]="false" [baseZIndex]="-50" [width]="500" [contentStyle]="{'height':'232px'}"
+[height]="376" [blockScroll]="true">
+<p-header>
+    DESVINCULAR PROCEDIMENTO
+</p-header>
+
+
+<form [formGroup]="form" novalidate>
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g form-group">
+                <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+                    <div class="ui-g-12 ui-md-12 ui-sm-12 ui-lg-12 ui-xl-12 espaco-divs">
+                        <div class="ui-inputgroup">
+                            <span class="ui-inputgroup-addon"><i class="fa fa-stethoscope"></i></span>
+                            <p-dropdown [style]="{'width':'373px'}" [autoWidth]="false" placeholder="Procedimentos"
+                                [options]="procedimentosSelect" [scrollHeight]="'80px'" formControlName="idProcedimento"
+                                [(ngModel)]="planoProcedimento.idProcedimento"></p-dropdown>
+                        </div>
+                        <span class="md-inputfield">
+                            <div *ngIf="isValidado('idProcedimento')" class="ui-message ui-messages-error">
+                                Preenchimento obrigatório
+                            </div>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+<p-footer>
+    <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+        <button pButton name="cancelar" id="cancelar" icon="fa-close" label="Cancelar"
+            class="btnCancelar" (click)="displayDesvincular = false;"></button>
+        <button pButton name="salvar" id="salvar" icon="fa-check" label="Desvincular" class="btnNovo"
+            (click)="desvincular()"></button>
+    </div>
+</p-footer>
+</p-dialog>
